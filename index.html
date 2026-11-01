@@ -5,7 +5,7 @@
 <title>Referendariat Jahresplaner</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Outfit:wght@400;500;600&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600;700&display=swap">
 <style>
 /* Layout: sanfte Pastell-Arbeitsfläche, Kopfzeile mit globalem Filter, Start-Dashboard mit Bannern, Details nur im Seiten-Drawer */
 :root{
@@ -234,7 +234,6 @@ h1{font-size:26px;letter-spacing:-.01em}
 .btn.ub{background:var(--ub-soft);border-color:transparent;color:var(--fg)}
 .seg{background:var(--sunken)}
 nav.tabs a[aria-current="page"]{border-color:var(--lav)}
-nav.tabs a.more{display:none}
 .chip{border-radius:999px}
 .banner{position:relative;overflow:hidden;border-radius:24px;padding:26px 26px 24px;background:linear-gradient(120deg,var(--rose) 0%,var(--lav-soft) 45%,var(--sky) 100%);display:flex;flex-direction:column;gap:8px;min-height:150px}
 .banner.ubb{background:linear-gradient(120deg,var(--butter) 0%,var(--peach) 55%,var(--rose) 100%)}
@@ -473,6 +472,135 @@ nav.tabs a.more{display:none}
   .toast{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ================= Claymorphism-Schicht =================
+   Plastische, weiche Flächen: Licht oben links, Schatten unten rechts, gedämpfte Farben. */
+:root{
+  --bg:#ece8f0; --surface:#f5f2f8; --sunken:#e6e1ec; --line:#ddd6e4; --line-2:#cdc4d7;
+  --fg:#34303b; --muted:#6f6879; --faint:#9d96a6; --ink:#4a3f66;
+  --d:#b85d6b; --d-soft:#f1dde1; --m:#4f74a8; --m-soft:#dce5f2; --e:#4a8a69; --e-soft:#d9ebe0;
+  --lav:#8270b8; --lav-soft:#e4ddf3; --peach:#f1ddd0; --butter:#f1e8cc; --mint:#d6ebdf; --sky:#d9e4f2; --rose:#f1dce2;
+  --ub:#b98330; --ub-soft:#f0e5cd;
+  --display:"Outfit","Nunito",system-ui,sans-serif;
+  --sh-d:rgba(98,84,128,.20); --sh-l:rgba(255,255,255,.95); --in-l:rgba(255,255,255,.75); --in-d:rgba(98,84,128,.14);
+  --clay:10px 10px 24px var(--sh-d),-8px -8px 20px var(--sh-l),inset 2px 2px 5px var(--in-l),inset -3px -3px 7px var(--in-d);
+  --clay-sm:5px 5px 12px var(--sh-d),-4px -4px 10px var(--sh-l),inset 1px 1px 3px var(--in-l),inset -2px -2px 4px var(--in-d);
+  --clay-in:inset 4px 4px 9px var(--in-d),inset -4px -4px 9px var(--in-l);
+  --clay-press:inset 3px 3px 7px var(--in-d),inset -3px -3px 7px var(--in-l);
+  --shadow:14px 14px 40px rgba(60,50,80,.28); --soft:var(--clay);
+  --r:26px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#25222b; --surface:#2c2833; --sunken:#221f28; --line:#383340; --line-2:#463f50;
+  --fg:#ece6f1; --muted:#aea4b8; --faint:#7d7487; --ink:#d5c9f1;
+  --d:#eba1ab; --d-soft:#432a30; --m:#a6c1e9; --m-soft:#26344a; --e:#9dd3b6; --e-soft:#233b30;
+  --lav:#bfaeee; --lav-soft:#383050; --peach:#47372e; --butter:#443d29; --mint:#243b31; --sky:#26344a; --rose:#45293a; --ub:#e8bd6c; --ub-soft:#45391f;
+  --sh-d:rgba(0,0,0,.5); --sh-l:rgba(255,255,255,.05); --in-l:rgba(255,255,255,.07); --in-d:rgba(0,0,0,.35); --shadow:14px 14px 40px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{
+  --bg:#25222b; --surface:#2c2833; --sunken:#221f28; --line:#383340; --line-2:#463f50;
+  --fg:#ece6f1; --muted:#aea4b8; --faint:#7d7487; --ink:#d5c9f1;
+  --d:#eba1ab; --d-soft:#432a30; --m:#a6c1e9; --m-soft:#26344a; --e:#9dd3b6; --e-soft:#233b30;
+  --lav:#bfaeee; --lav-soft:#383050; --peach:#47372e; --butter:#443d29; --mint:#243b31; --sky:#26344a; --rose:#45293a; --ub:#e8bd6c; --ub-soft:#45391f;
+  --sh-d:rgba(0,0,0,.5); --sh-l:rgba(255,255,255,.05); --in-l:rgba(255,255,255,.07); --in-d:rgba(0,0,0,.35); --shadow:14px 14px 40px rgba(0,0,0,.6)}
+body{background:var(--bg)}
+h1,h2,h3,.brand{letter-spacing:-.015em;font-weight:600}
+h1{font-size:28px}
+header.top{background:color-mix(in srgb,var(--bg) 88%,transparent);border-bottom:0}
+nav.tabs{gap:6px;padding:4px 2px 12px}
+nav.tabs a{border:0;border-radius:16px;padding:9px 14px}
+nav.tabs a[aria-current="page"]{background:var(--surface);box-shadow:var(--clay-sm);color:var(--ink)}
+.brand .logo{border-radius:12px;background:var(--lav-soft);box-shadow:var(--clay-sm)}
+/* Flächen */
+.panel,.card,.ucard,.ubcard,.empty.panel,.bal,.link,.toggle,.idea,.daycard{border:0!important;background:var(--surface);box-shadow:var(--clay);border-radius:var(--r)}
+.ucard:hover,.ubcard:hover,.next:hover,.count:hover{transform:translateY(-2px)}
+.ucard,.ubcard,.next,.count,.btn,.seg button,.mini button,.chip.add,.iconbtn,.cell,.slot{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.banner{background:var(--surface);box-shadow:var(--clay);border-radius:32px;padding:30px}
+.banner.ubb{background:color-mix(in srgb,var(--ub-soft) 55%,var(--surface))}
+.banner .quote{color:var(--muted);font-weight:500}
+.count{box-shadow:var(--clay);border-radius:var(--r)}
+.count.t1{background:color-mix(in srgb,var(--mint) 70%,var(--surface))}.count.t2{background:color-mix(in srgb,var(--sky) 70%,var(--surface))}.count.t3{background:color-mix(in srgb,var(--butter) 70%,var(--surface))}.count.t4{background:color-mix(in srgb,var(--rose) 70%,var(--surface))}
+.count .big{font-weight:600}
+.ring .bgc{stroke:var(--sunken)}
+.next{background:var(--surface);box-shadow:var(--clay-sm);border-radius:18px}
+.next .bd{box-shadow:var(--clay-sm);border-radius:14px}
+.mat{background:var(--surface);box-shadow:var(--clay-sm);border-radius:18px}
+.mat .mi{box-shadow:var(--clay-sm);border-radius:12px}
+.idea{background:color-mix(in srgb,var(--butter) 55%,var(--surface))}
+.note{background:var(--surface);box-shadow:var(--clay-in);border-radius:18px}
+/* Knöpfe */
+.btn{border:0;background:var(--surface);box-shadow:var(--clay-sm);padding:9px 16px}
+.btn:hover{transform:translateY(-1px)}
+.btn:active,.iconbtn:active,.seg button:active,.mini button:active{box-shadow:var(--clay-press);transform:translateY(1px)}
+.btn.primary{background:var(--lav);color:#fff;box-shadow:6px 6px 14px color-mix(in srgb,var(--lav) 45%,transparent),-4px -4px 10px var(--sh-l),inset 2px 2px 4px rgba(255,255,255,.35),inset -3px -3px 6px rgba(40,20,80,.25)}
+:root[data-theme="dark"] .btn.primary{color:#1f1b26}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#1f1b26}}
+.btn.soft{background:color-mix(in srgb,var(--lav-soft) 70%,var(--surface))}
+.btn.ub{background:color-mix(in srgb,var(--ub-soft) 75%,var(--surface))}
+.btn.ghost{background:transparent;box-shadow:none}
+.btn.ghost:hover{background:var(--surface);box-shadow:var(--clay-sm)}
+.btn.f{background:var(--surface);color:var(--fc)}
+.iconbtn{background:var(--surface);box-shadow:var(--clay-sm);border-radius:14px}
+.iconbtn:hover{background:var(--surface)}
+.dh .iconbtn{box-shadow:var(--clay-sm)}
+/* Segmente, Chips */
+.seg{background:var(--sunken);box-shadow:var(--clay-in);border-radius:18px;padding:4px}
+.seg button{border-radius:14px}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:var(--clay-sm);color:var(--ink)}
+.mini button{background:var(--surface);box-shadow:var(--clay-sm)}
+.mini button[aria-pressed="true"]{box-shadow:var(--clay-press);background:var(--lav-soft)}
+.chip{box-shadow:inset 1px 1px 2px var(--in-l),inset -1px -1px 3px var(--in-d)}
+.chip.add{box-shadow:none}
+/* Eingaben: eingedrückt */
+.input,select.input,.fld input:not([type=checkbox]),.fld textarea,.fld select,.vrow input,.vrow textarea,.wprow input,.dayedit select,.dayedit input,.ttedit select,.ttedit input,textarea.code,.std textarea{border:0!important;background:var(--sunken)!important;box-shadow:var(--clay-in);border-radius:14px}
+.fld input:focus,.fld textarea:focus,.fld select:focus,.input:focus{box-shadow:var(--clay-in),0 0 0 3px color-mix(in srgb,var(--lav) 35%,transparent)}
+.dropzone{border:0;background:var(--sunken);box-shadow:var(--clay-in);border-radius:20px}
+.checklist label{background:var(--surface);box-shadow:var(--clay-sm);border-radius:16px}
+.checklist label.on{background:color-mix(in srgb,var(--ub-soft) 75%,var(--surface));box-shadow:var(--clay-press)}
+.prog,.cov{background:var(--sunken);box-shadow:var(--clay-in)}
+/* Drawer */
+aside.drawer{background:var(--bg);border-radius:30px 0 0 30px}
+.dh,.df{border-color:transparent}
+.df{background:var(--bg)}
+details.sec{border-top:0;background:var(--surface);box-shadow:var(--clay-sm);border-radius:20px;padding:14px 16px}
+.scrim{background:rgba(40,32,56,.28)}
+/* Listen & Tabellen */
+.lesson{border-top-color:var(--line)}
+.lessons .lesson{border-radius:14px;padding-inline:8px}
+.lessons .lesson:hover{background:var(--sunken)}
+.tt .slot{background:var(--surface);box-shadow:var(--clay-sm);border-radius:16px}
+.tt .slot.f-D,.tt .slot.f-M,.tt .slot.f-E{background:color-mix(in srgb,var(--fs) 70%,var(--surface))}
+.tt .slot.plan{border:0;background:var(--sunken);box-shadow:var(--clay-in)}
+.tt .slot.off{box-shadow:none}
+.cell{border-radius:7px}
+.cell.p{box-shadow:inset 1px 1px 2px var(--in-l),inset -1px -1px 2px var(--in-d)}
+.cell.t{box-shadow:2px 2px 4px var(--sh-d),inset 1px 1px 2px rgba(255,255,255,.35)}
+.yp .bg{border-radius:8px}
+.seg-u{border:0;box-shadow:3px 3px 7px var(--sh-d),-2px -2px 5px var(--sh-l),inset 1px 1px 2px var(--in-l)}
+.kg .rh,.yp .lab,.kg .grp .gh{background:var(--surface)}
+nav.tabs{background:transparent}
+.moresheet{background:var(--bg);box-shadow:var(--shadow);border-radius:24px}
+.moresheet a{background:var(--surface);box-shadow:var(--clay-sm);border-radius:16px}
+.toast{background:var(--ink);color:var(--bg);box-shadow:var(--shadow)}
+.tip{border-radius:12px}
+/* Gadgets */
+.timer .t,.pick{font-weight:600}
+.groups div{background:var(--surface);box-shadow:var(--clay-sm);border-radius:14px}
+/* Tafel */
+.stage{background:var(--bg)}
+.stage .paper{background:var(--surface);box-shadow:var(--clay)}
+.stage .paper::before{display:none}
+.stg-tools button,.stg-btn,.stg-steps button,.stg-date,.mini-day .md,.lbar,.stg-soz,.stg-mat,.nextcard,.stg-teacher{background:var(--surface);box-shadow:var(--clay-sm);border:0}
+.stg-steps button.on,.stg-tools button[aria-pressed="true"]{background:var(--lav);color:#fff;box-shadow:var(--clay-sm)}
+.stg-btn.fwd{background:var(--lav);color:#fff}
+.mini-day .md.on{box-shadow:var(--clay-sm),0 0 0 2.5px var(--lav)}
+.lbar .lb-track{background:var(--sunken);box-shadow:var(--clay-in)}
+.special{background:color-mix(in srgb,var(--butter) 60%,var(--surface))}
+.daycard.on{box-shadow:var(--clay),0 0 0 4px var(--lav)}
+.bigtimer>svg .bgc{stroke:var(--sunken)}
+.bigtimer>svg .fgc{stroke:var(--lav)}
+.amp{box-shadow:var(--clay)}
+@media (max-width:760px){nav.tabs{background:var(--bg)!important;box-shadow:0 -6px 20px var(--sh-d);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));gap:2px}nav.tabs a{padding:6px 2px;border-radius:14px;min-width:0}}
+.stage.amp-g{box-shadow:inset 0 0 0 12px #9fd4b2}.stage.amp-y{box-shadow:inset 0 0 0 12px #ecd28a}.stage.amp-r{box-shadow:inset 0 0 0 12px #e9a3a3}
+
 </style>
 
 <header class="top">
@@ -927,7 +1055,13 @@ function render(){renderChrome();const v=document.getElementById('view');
  hydrateLocal(v);}
 
 /* ========= Ansicht 0: Start-Dashboard ========= */
-const DECO=`<svg class="deco" viewBox="0 0 320 160" aria-hidden="true"><ellipse class="c1" cx="230" cy="60" rx="70" ry="26"/><ellipse class="c1" cx="270" cy="44" rx="40" ry="24"/><ellipse class="c2" cx="150" cy="120" rx="60" ry="18"/><circle class="s1" cx="96" cy="40" r="20"/><path class="s2" d="M60 96l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path class="s3" d="M300 110l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path class="s4" d="M196 120l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z"/><path class="s2" d="M140 28l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>`;
+const DECO=`<svg class="deco" viewBox="0 0 320 170" aria-hidden="true"><defs>
+<radialGradient id="cg1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#c9bdf0"/><stop offset="1" stop-color="#8f7cc8"/></radialGradient>
+<radialGradient id="cg2" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#f3c9d2"/><stop offset="1" stop-color="#c98a99"/></radialGradient>
+<radialGradient id="cg3" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#c8e4d4"/><stop offset="1" stop-color="#7fb397"/></radialGradient>
+<radialGradient id="cg4" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#f2e3b8"/><stop offset="1" stop-color="#cfae63"/></radialGradient>
+<filter id="cs" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="6" dy="9" stdDeviation="7" flood-color="#5a4a7a" flood-opacity=".22"/></filter></defs>
+<g filter="url(#cs)"><circle cx="236" cy="66" r="46" fill="url(#cg1)"/><circle cx="160" cy="118" r="22" fill="url(#cg2)"/><circle cx="296" cy="128" r="18" fill="url(#cg3)"/><rect x="104" y="30" width="34" height="34" rx="12" fill="url(#cg4)" transform="rotate(-14 121 47)"/></g></svg>`;
 function schoolDaysBetween(aIso,bMs){let n=0;for(let d=P(aIso);d<bMs;d+=DAY){if(dow(d)<5&&!CAL.off(d)&&d>=CAL.start&&d<=CAL.end)n++}return n}
 function nextBreak(t){const ms=P(t);for(const f of S.settings.ferien){const a=P(f.a);if(a>ms)return{n:f.n,a}}return null}
 function dayOfYear(){const t=new Date();return Math.floor((t-new Date(t.getFullYear(),0,0))/DAY)}
