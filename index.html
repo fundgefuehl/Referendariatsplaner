@@ -872,7 +872,7 @@ const KEY='jahresplaner.hessen.v1';
 const DEF_SETTINGS={yearStart:'2027-08-09',yearEnd:'2028-06-30',
  ferien:[{n:'Herbstferien',a:'2027-10-04',b:'2027-10-16'},{n:'Weihnachtsferien',a:'2027-12-23',b:'2028-01-11'},{n:'Osterferien',a:'2028-04-03',b:'2028-04-14'},{n:'Sommerferien',a:'2028-07-03',b:'2028-08-11'}],
  theme:'auto',filter:{jg:'all',fach:'all'},last:{fach:'D',jg:3,klasse:''},std:{},strands:STRANDS,
- ubTarget:10,refEnd:'',examDate:'',names:'',wins:[]};
+ ubTarget:10,refStart:'2027-05-01',refEnd:'',examDate:'',names:'',wins:[]};
 const UB_CHECK=[['entwurf','Entwurf geschrieben'],['abgabe','Entwurf abgegeben'],['material','Material fertig'],['kopien','Kopien gemacht'],['raum','Raum & Technik geprüft'],['sitz','Sitzplan / Gruppen'],['reflexion','Reflexion notiert']];
 const IMPULSE=['Du musst heute nicht perfekt sein. Gut vorbereitet und freundlich reicht völlig.','Eine Stunde, die nicht klappt, ist eine Stunde, aus der du etwas lernst.','Kinder erinnern sich an die Stimmung im Raum, nicht an die perfekte Folie.','Heute zählt eine kleine Sache, die besser läuft als gestern.','Pausen sind Planungszeit für deinen Kopf. Nimm sie dir.','Du bist schon weiter, als du denkst. Schau mal in dein Erfolgsglas.','Ruhig bleiben, langsam sprechen, lächeln: Das ist schon guter Unterricht.','Fragen der Kinder sind kein Störfaktor, sondern dein bester Einstieg.','Lieber eine klare Stunde als drei halbe Ideen.','Wer reflektiert, wird besser. Zwei Sätze nach jeder Stunde genügen.','Ein UB zeigt einen Ausschnitt, nicht dich als ganze Lehrerin.','Plane so, dass du selbst Lust auf die Stunde hast.','Wasser trinken, durchatmen, weiter geht’s.','Du darfst Hilfe annehmen. Kolleginnen freuen sich, gefragt zu werden.','Jede dokumentierte Stunde ist Material für deine Prüfung.','Kleine Routinen tragen große Wochen.','Feier heute eine Kleinigkeit, die gut lief.','Die Kinder brauchen dich echt, nicht fehlerfrei.','Struktur gibt Sicherheit, dir und der Klasse.','Freitag kommt bestimmt.'];
 let S, STORAGE_OK=true;
@@ -1075,7 +1075,9 @@ function vStart(){const t=todayISO(),now=new Date();const h=now.getHours();const
  const target=+S.settings.ubTarget||0;const ubLeft=Math.max(0,target-done.length);
  const daysTo=iso=>Math.round((P(iso)-P(t))/DAY);
  const cards=[];
- if(before)cards.push(`<button class="count t1" data-act="goto" data-tab="jahresplan"><div><div class="big">${daysTo(I(CAL.start))}</div></div><div class="lbl"><b>Tage bis zum ersten Schultag</b>${longDate(I(CAL.start))}. Genug Zeit, um entspannt zu planen.</div></button>`);
+ const rs=S.settings.refStart;
+ if(rs&&t<rs)cards.push(`<button class="count t1" data-act="goto" data-tab="grundlagen"><div class="big">${daysTo(rs)}</div><div class="lbl"><b>Tage bis zu deinem ersten Arbeitstag</b>${longDate(rs)}. Zuerst Seminare und Hospitationen, ab ${dmy(CAL.start)} dein eigener Unterricht.</div></button>`);
+ else if(before)cards.push(`<button class="count t1" data-act="goto" data-tab="jahresplan"><div class="big">${daysTo(I(CAL.start))}</div><div class="lbl"><b>Tage bis zu deinem ersten eigenen Unterricht</b>${longDate(I(CAL.start))}. Bis dahin: Seminare und Hospitationen.</div></button>`);
  else if(nb)cards.push(`<button class="count t1" data-act="goto" data-tab="jahresplan"><div class="big">${toBreak}</div><div class="lbl"><b>Schultage bis zu den ${esc(nb.n)}</b>ab ${dmy(nb.a)}. Du schaffst das!</div></button>`);
  cards.push(`<button class="count t2" data-act="goto" data-tab="jahresplan">${ring(after?1:1-left/Math.max(1,total),after?'✓':Math.round((1-left/Math.max(1,total))*100)+'%')}<div class="lbl"><b>${after?'Schuljahr geschafft':`Noch ${left} Schultage`}</b>${after?'Zeit für den Sommer.':`im Schuljahr, von ${total}`}</div></button>`);
  cards.push(`<button class="count t3" data-act="goto" data-tab="ubs"><div class="big">${target?ubLeft:ubs.length}</div><div class="lbl"><b>${target?(ubLeft?'Unterrichtsbesuche vor dir':'Alle UBs geschafft!'):'Unterrichtsbesuche'}</b>${done.length} geschafft${target?` von ${target}`:''}${next?` · nächster in ${daysTo(next.date)===0?'heute':daysTo(next.date)+' Tagen'}`:''}</div></button>`);
@@ -1224,6 +1226,7 @@ function vBase(){const map=[['Key concept','Leitidee / Leitperspektive / Inhalts
  <section class="panel combo"><h2>Parallele Stränge je Jahrgang</h2><p class="muted" style="margin:0">Lehrgänge und Routinen laufen neben den Einheiten. Eine Zeile pro Strang.</p><div class="cols">${[1,2,3,4].map(j=>`<div class="fld"><label for="st${j}">Jahrgang ${j}</label><textarea id="st${j}" rows="6" data-set="strands.${j}">${esc(S.settings.strands[j]||'')}</textarea></div>`).join('')}</div></section>
  <section class="panel combo"><h2>Referendariat & UBs</h2><div class="cols">
   <div class="fld"><label for="ubt">Anzahl Unterrichtsbesuche (Ziel)</label><input id="ubt" type="number" min="0" max="40" value="${esc(S.settings.ubTarget)}" data-set="ubTarget"></div>
+  <div class="fld"><label for="refs">Erster Arbeitstag im Referendariat</label><input id="refs" type="date" value="${esc(S.settings.refStart)}" data-set="refStart"></div>
   <div class="fld"><label for="refe">Ende des Referendariats</label><input id="refe" type="date" value="${esc(S.settings.refEnd)}" data-set="refEnd"></div>
   <div class="fld"><label for="exd">Prüfungstermin</label><input id="exd" type="date" value="${esc(S.settings.examDate)}" data-set="examDate"></div></div>
   <p class="muted" style="margin:0;font-size:13.5px">Daraus entstehen die Countdowns auf der Startseite. Leere Felder werden einfach nicht angezeigt.</p></section>
