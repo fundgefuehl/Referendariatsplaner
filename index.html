@@ -1220,8 +1220,7 @@ function vBase(){const map=[['Key concept','Leitidee / Leitperspektive / Inhalts
  <div class="stack">
  <section class="panel combo"><div class="spread"><h2>Bildungsstandards (KC Primarstufe Hessen 2011)</h2><button class="btn small" data-act="std-edit">${GEDIT?'Fertig':'Wortlaut bearbeiten'}</button></div>
   <p class="muted" style="margin:0">Die Standards (Ende Jahrgang 4) sind die einzigen Kompetenzen der App. Gleiche den Wortlaut einmal mit deinem KC-PDF ab und passe ihn hier an – alle Tooltips und Exporte übernehmen das.</p>${stdBlocks}</section>
- <section class="panel combo"><h2>IB → Kerncurriculum</h2><div class="scrollx"><table class="table"><thead><tr><th>IB-Begriff</th><th>In der App</th><th>Ebene</th></tr></thead><tbody>${map.map(r=>`<tr><td class="muted">${r[0]}</td><td><b>${r[1]}</b></td><td class="muted">${r[2]}</td></tr>`).join('')}</tbody></table></div>
-  <div class="muted" style="font-size:13.5px">Phasen im Wochenplan (Inquiry Cycle): ${PHASEN.join(' → ')}. Kontexte: ${KONTEXT.join(' · ')}.</div></section>
+
  <section class="panel combo"><h2>Hessen-Hinweise</h2><div class="stack" style="gap:8px">${notes.map(n=>`<div class="std" style="grid-template-columns:minmax(0,170px) 1fr"><b>${n[0]}</b><span class="muted">${n[1]}</span></div>`).join('')}</div><p class="faint" style="margin:0;font-size:13px">Mit den aktuell gültigen Erlassen abgleichen.</p></section>
  <section class="panel combo"><h2>Parallele Stränge je Jahrgang</h2><p class="muted" style="margin:0">Lehrgänge und Routinen laufen neben den Einheiten. Eine Zeile pro Strang.</p><div class="cols">${[1,2,3,4].map(j=>`<div class="fld"><label for="st${j}">Jahrgang ${j}</label><textarea id="st${j}" rows="6" data-set="strands.${j}">${esc(S.settings.strands[j]||'')}</textarea></div>`).join('')}</div></section>
  <section class="panel combo"><h2>Referendariat & UBs</h2><div class="cols">
@@ -1586,6 +1585,27 @@ function dSeminar(){const s=CTX.obj;const recent=S.lessons.slice().sort((a,b)=>b
  <div class="df"><span class="saved" id="saved">Wird automatisch gespeichert</span><button class="btn ghost small danger" data-act="del-sem">${ic('trash')} ${CTX.confirmDel?'Wirklich löschen?':'Löschen'}</button><button class="btn small" data-act="copy-sem">${ic('copy')} Als Text</button><button class="btn primary" data-act="close">Fertig</button></div>`}
 function semText(s){return [`SEMINAR – ${s.typ||''}: ${s.thema||''}`,`${s.datum?longDate(s.datum):''}${s.zeit?' · '+s.zeit:''}${s.leitung?' · '+s.leitung:''}${s.ort?' · '+s.ort:''}`,'','Mitschrift:',s.notizen||'–','','Erkenntnisse:',s.erkenntnisse||'–','','Das probiere ich aus:',s.ausprobieren||'–','','Aufgaben:',...(s.tasks||[]).map(x=>`  [${x.done?'x':' '}] ${x.t}${x.due?' (bis '+dmy(P(x.due))+')':''}`),'','Materialien:',...(s.materials||[]).map(m=>'  • '+(m.name||m.url)+(m.kind==='link'?' – '+m.url:''))].join('\n')}
 /* Klasse */
+const GAMES=[
+['Ich sehe was, was du nicht siehst','Ein Kind beschreibt einen Gegenstand im Raum nach Farbe oder Form, die anderen raten.','2–5','Jg 1–4 · auch Englisch („I spy with my little eye …“)'],
+['Zahlen-Klatschen','Gemeinsam zählen, bei jeder Zahl der 3er-Reihe wird geklatscht statt gesprochen. Wer sich vertut, setzt sich.','3–5','Jg 2–4 · Mathe'],
+['Wortkette','Das nächste Wort beginnt mit dem letzten Buchstaben des vorigen (Hund – Dach – Hose …).','3–5','Jg 2–4 · Deutsch'],
+['Stille Post','Ein Satz wird geflüstert weitergegeben. Am Ende vergleichen, was angekommen ist.','3–5','Jg 1–4'],
+['Simon says','Bewegungen nur ausführen, wenn vorher „Simon says“ gesagt wird.','2–4','Jg 3–4 · Englisch'],
+['Pantomime','Ein Kind stellt ein Tier, einen Beruf oder ein Verb dar, die Klasse rät.','3–5','Jg 1–4 · Deutsch / Englisch'],
+['Wer fehlt?','Ein Kind verlässt kurz den Raum oder schließt die Augen, ein anderes versteckt sich. Wer fehlt?','3','Jg 1–2'],
+['Blitzrechnen-Duell','Zwei Kinder stehen, die Lehrkraft nennt eine Aufgabe, wer zuerst richtig antwortet, bleibt stehen.','3–5','Jg 1–4 · Mathe'],
+['Buchstaben-Körper','Die Kinder formen Buchstaben mit dem Körper, die anderen lesen das Wort.','3–5','Jg 1–2 · Deutsch'],
+['Was ist anders?','Ein Kind merkt sich die Klasse, geht kurz raus, drei Dinge werden verändert. Was ist anders?','3–5','Jg 1–4'],
+['Zip-Zap-Zoom','Im Kreis wird ein Impuls mit Zip (links), Zap (rechts) oder Zoom (quer) weitergegeben.','3','Jg 2–4'],
+['Kategorien-Runde','Eine Kategorie (Tiere, Obst, Nomen mit B …), reihum nennt jedes Kind ein Wort, ohne Wiederholung.','3–5','Jg 1–4 · auch Englisch'],
+['Zahlen raten','Die Lehrkraft denkt sich eine Zahl bis 100. Die Kinder fragen „Ist sie größer als …?“','3','Jg 2–4 · Mathe'],
+['Bewegungs-Würfel','Gewürfelt wird eine Übung: 1 Hampelmann, 2 Kniebeuge, 3 auf einem Bein … Die Augenzahl gibt die Wiederholungen an.','2','Jg 1–4 · Bewegungspause'],
+['Hot Seat','Ein Kind sitzt vorne und errät ein Wort an der Tafel hinter sich, die Klasse gibt Hinweise.','5','Jg 3–4 · Deutsch / Englisch'],
+['Daumen hoch, Daumen runter','Die Lehrkraft nennt Aussagen (Rechenaufgaben, Rechtschreibung, Wahr/Falsch), die Kinder zeigen Daumen hoch oder runter.','2–3','Jg 1–4']];
+function gGames(){const g=GAMES[GAMEI%GAMES.length];return `<div class="card" id="g-games"><div class="spread"><h2>${ic('sparkle')} Spiele für zwischendurch</h2><button class="btn small soft" data-act="game-next">${ic('dice')} Anderes</button></div>
+ <div><b style="font-size:16px">${esc(g[0])}</b> <span class="chip" style="background:var(--lav-soft);color:var(--ink)">${g[2]} Min.</span><p style="margin:6px 0 4px">${esc(g[1])}</p><span class="muted" style="font-size:13px">${esc(g[3])}</span></div>
+ <details><summary class="muted" style="cursor:pointer;font-size:13px">Alle ${GAMES.length} Spiele</summary><div class="stack" style="gap:8px;margin-top:8px">${GAMES.map(x=>`<div><b>${esc(x[0])}</b> <span class="faint" style="font-size:12.5px">${x[2]} Min. · ${esc(x[3])}</span><div class="muted" style="font-size:13.5px">${esc(x[1])}</div></div>`).join('')}</div></details></div>`}
+let GAMEI=Math.floor(Math.random()*16);
 function vKlasse(){const items=dayItems();const r=S.extras.klasse.reward;
  return `<div class="viewhead"><div><h1>Klasse</h1><p>Werkzeuge für den Unterricht. Mit ${ic('max')} öffnest du sie groß für Tafel oder Beamer.</p></div></div>
  <div class="dash" style="margin-top:0">
@@ -1603,7 +1623,8 @@ function vKlasse(){const items=dayItems();const r=S.extras.klasse.reward;
   <div class="row"><button class="btn small primary" data-act="jar" data-d="1">${ic('plus')} Murmel</button><button class="btn small" data-act="jar" data-d="-1">−</button><button class="btn small ghost" data-act="jar-reset">Leeren</button></div>
   <details><summary class="muted" style="cursor:pointer;font-size:13px">Ziel & Belohnung</summary><div class="cols" style="margin-top:8px"><div class="fld"><label for="jg">Ziel</label><input id="jg" type="number" min="1" max="200" data-act-change="jar-goal" value="${r.goal}"></div><div class="fld"><label for="jp">Belohnung</label><input id="jp" data-act-change="jar-prize" value="${esc(r.prize||'')}"></div></div></details></div></div>
  <div class="w4">${gTimer()}</div>
- <div class="w4">${gPick()}</div></div>`}
+ <div class="w4">${gPick()}</div>
+ <div class="w8">${gGames()}</div></div>`}
 function jarSvg(n,goal,w){const cols=['#f4b6c2','#b9d4f5','#bfe6cf','#f6dc9a','#d5c6f3','#f7c8a8'];const cap=Math.max(1,goal);const shown=Math.min(n,60);let m='';
  for(let i=0;i<shown;i++){const row=Math.floor(i/6),col=i%6;m+=`<circle cx="${17+col*7+(row%2?3.5:0)}" cy="${64-row*6.2}" r="3.2" fill="${cols[i%cols.length]}"/>`}
  return `<svg viewBox="0 0 64 76" style="width:${w}px;height:auto;flex:none" aria-hidden="true"><rect x="16" y="2" width="32" height="9" rx="3" fill="var(--lav)"/><path d="M12 14h40l3 8v44a7 7 0 0 1-7 7H16a7 7 0 0 1-7-7V22Z" fill="var(--sky)" stroke="var(--line-2)" stroke-width="2"/>${m}<rect x="12" y="${70-Math.min(1,n/cap)*52}" width="2" height="2" fill="none"/></svg>`}
@@ -1727,6 +1748,7 @@ function saveExtras(){persist();const s=document.getElementById('saved');if(s)s.
 document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;const a=t.dataset.act;const X=S.extras;
  switch(a){
  case 'wmode':WEEKMODE=t.dataset.v;render();break;
+ case 'game-next':{GAMEI=(GAMEI+1+Math.floor(Math.random()*(GAMES.length-1)))%GAMES.length;const g=document.getElementById('g-games');if(g)g.outerHTML=gGames();break}
  case 'stg-lang':STG.lang=STG.lang==='en'?'de':'en';renderStage();break;
  case 'tafel-level':S.extras.klasse.level=+t.dataset.v;persist();render();break;
  case 'tt-edit':CTX={type:'tt',obj:X.timetable};drawRender(false);openDrawer();break;

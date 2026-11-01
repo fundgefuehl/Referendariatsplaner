@@ -16,9 +16,9 @@ Deine Einträge werden im Browser gespeichert (localStorage, Dateien in IndexedD
 - **Start:** Countdowns (Schultage, Ferien, Unterrichtsbesuche), Heute, Als Nächstes, Aufgaben, Erfolgsglas
 - **Woche und Stundenplan:** Stunden mit einem Tipp planen, dabei automatisch mit Einheit, Woche, Phase und Kompetenzen verknüpft
 - **Unterrichtsbesuche:** Checkliste, Verlaufsplan, Materialien, Feedback, Entwurf-Assistent
-- **Einheiten:** Unit-Planer in IB-Struktur, abgebildet auf das Kerncurriculum Hessen 2011
+- **Einheiten:** Unit-Planer, abgebildet auf das Kerncurriculum Hessen 2011
 - **Seminare:** Mitschrift, Erkenntnisse, Aufgaben, Materialien
-- **Klasse:** Tagesablauf, Stillezeichen, Murmelglas, Timer und Zufallsauswahl, alles auch als Tafelansicht
+- **Klasse:** Tagesablauf, Stillezeichen, Murmelglas, Timer, Zufallsauswahl und Spiele für zwischendurch, alles auch als Tafelansicht
 - **Unterrichtsmodus:** Phasen mit Timer für Beamer oder Tafel, an die Klassenstufe angepasst, auf Englisch in Englischstunden
 - **Bibliothek:** Materialien und Ideen
 - **Jahresplan, Kompetenzraster, Archiv, Grundlagen**
